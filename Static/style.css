@@ -1,0 +1,240 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f0f7fb;
+}
+
+/* NAVBAR */
+
+.navbar {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 20px 70px;
+
+  background: white;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.nav-left {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+.logo {
+  height: 50px;
+}
+
+.title {
+  font-size: 20px;
+
+  font-weight: 600;
+
+  color: #1c2c8d;
+}
+
+.title span {
+  display: block;
+
+  font-size: 13px;
+
+  color: #666;
+}
+
+.nav-right a {
+  margin-left: 30px;
+
+  text-decoration: none;
+
+  color: #333;
+
+  font-weight: 500;
+
+  transition: 0.3s;
+}
+
+.nav-right a:hover {
+  color: #1c2c8d;
+}
+
+/* HERO */
+
+.hero {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 100px 90px;
+}
+
+.hero-left {
+  max-width: 550px;
+}
+
+.hero-left h1 {
+  font-size: 42px;
+
+  color: #1c2c8d;
+
+  margin-bottom: 10px;
+}
+
+.hero-left h2 {
+  font-size: 26px;
+
+  margin-bottom: 20px;
+}
+
+.hero-left span {
+  color: #303d8e;
+}
+
+.hero-left p {
+  color: #444;
+
+  line-height: 1.6;
+
+  margin-bottom: 30px;
+}
+
+/* BUTTON */
+
+.start-btn {
+  padding: 15px 35px;
+
+  background: #1c2c8d;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 8px;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.start-btn:hover {
+  background: #303d8e;
+}
+
+/* TEAM PLACEHOLDER */
+
+.team-placeholder {
+  width: 360px;
+
+  height: 360px;
+
+  background: #dfe7ff;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 20px;
+
+  color: #1c2c8d;
+
+  font-weight: 500;
+}
+
+/* LOADING SCREEN */
+
+#loader {
+  position: fixed;
+
+  width: 100%;
+
+  height: 100vh;
+
+  background: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  z-index: 999;
+}
+
+.spinner {
+  width: 60px;
+
+  height: 60px;
+
+  border: 6px solid #ddd;
+
+  border-top: 6px solid #1c2c8d;
+
+  border-radius: 50%;
+
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ADD the new form CSS below */
+
+.form-container {
+  width: 400px;
+  margin: 80px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none; /* ← add this line */
+  width: 100%;
+  height: 6px;
+  background: var(--border);
+  border-radius: 100px;
+  outline: none;
+  cursor: pointer;
+}
