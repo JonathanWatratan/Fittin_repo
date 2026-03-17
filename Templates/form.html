@@ -1,1014 +1,646 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fittin | Health Check-In</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://unpkg.com/feather-icons"></script>
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fittin | Health Check-In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-      :root {
-        --primary: #1c2c8d;
-        --secondary: #303d8e;
-        --bg: #f0f7fb;
-        --white: #ffffff;
-        --text: #000000;
-        --muted: #64748b;
-        --accent: #4a5fd4;
-        --accent-light: #e8ecfa;
-        --border: rgba(28, 44, 141, 0.12);
-        --shadow: 0 4px 24px rgba(28, 44, 141, 0.1);
-        --shadow-lg: 0 12px 48px rgba(28, 44, 141, 0.16);
-        --danger: #ef4444;
-        --success: #22c55e;
-      }
+    :root {
+      --primary:   #1C2C8D;
+      --secondary: #303D8E;
+      --bg:        #F0F7FB;
+      --white:     #ffffff;
+      --text:      #000000;
+      --muted:     #64748b;
+      --accent:    #4A5FD4;
+      --accent-light: #E8ECFA;
+      --border:    rgba(28,44,141,0.12);
+      --shadow:    0 4px 24px rgba(28,44,141,0.10);
+      --shadow-lg: 0 12px 48px rgba(28,44,141,0.16);
+      --danger:    #ef4444;
+      --success:   #22c55e;
+    }
 
-      html {
-        scroll-behavior: smooth;
-      }
+    html { scroll-behavior: smooth; }
 
-      body {
-        font-family: "Poppins", sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        min-height: 100vh;
-      }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
 
-      /* ── NAVBAR ── */
-      nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 5%;
-        height: 68px;
-        background: rgba(240, 247, 251, 0.92);
-        backdrop-filter: blur(16px);
-        border-bottom: 1px solid var(--border);
-      }
-      .nav-brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        text-decoration: none;
-      }
-      .nav-logo {
-        width: 40px;
-        height: 40px;
-        background: var(--primary);
-        border-radius: 11px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      .nav-logo svg {
-        color: white;
-        width: 20px;
-        height: 20px;
-      }
-      .heartwave-path {
-        stroke-dasharray: 120;
-        stroke-dashoffset: 0;
-      }
-      .nav-title {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: var(--primary);
-      }
-      .nav-back {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        font-size: 0.83rem;
-        font-weight: 600;
-        color: var(--muted);
-        text-decoration: none;
-        transition: color 0.2s;
-      }
-      .nav-back:hover {
-        color: var(--primary);
-      }
-      .nav-back svg {
-        width: 15px;
-        height: 15px;
-      }
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 68px;
+      background: rgba(240,247,251,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo {
+      width: 40px; height: 40px;
+      background: var(--primary); border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .nav-logo svg { color: white; width: 20px; height: 20px; }
+    .heartwave-path {
+      stroke-dasharray: 120;
+      stroke-dashoffset: 0;
+    }
+    .nav-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+    .nav-back {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 0.83rem; font-weight: 600; color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--primary); }
+    .nav-back svg { width: 15px; height: 15px; }
 
-      /* ── LAYOUT ── */
-      .page {
-        min-height: 100vh;
-        padding: 100px 5% 60px;
-        display: grid;
-        grid-template-columns: 300px 1fr;
-        gap: 40px;
-        max-width: 1100px;
-        margin: 0 auto;
-      }
+    /* ── LAYOUT ── */
+    .page {
+      min-height: 100vh;
+      padding: 100px 5% 60px;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
 
-      /* ── SIDEBAR ── */
-      .sidebar {
-        position: sticky;
-        top: 90px;
-        height: fit-content;
-      }
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: sticky; top: 90px;
+      height: fit-content;
+    }
 
-      .sidebar-card {
-        background: var(--white);
-        border-radius: 24px;
-        padding: 28px 24px;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
-        margin-bottom: 20px;
-        opacity: 0;
-        animation: fadeUp 0.6s ease 0.2s forwards;
-      }
+    .sidebar-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.2s forwards;
+    }
 
-      .sidebar-card h3 {
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: var(--primary);
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 18px;
-      }
+    .sidebar-card h3 {
+      font-size: 0.8rem; font-weight: 700;
+      color: var(--primary); letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 18px;
+    }
 
-      /* Progress steps */
-      .progress-steps {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-      }
+    /* Progress steps */
+    .progress-steps { display: flex; flex-direction: column; gap: 0; }
 
-      .progress-step {
-        display: flex;
-        align-items: flex-start;
-        gap: 14px;
-        padding-bottom: 22px;
-        position: relative;
-      }
-      .progress-step:last-child {
-        padding-bottom: 0;
-      }
-      .progress-step::before {
-        content: "";
-        position: absolute;
-        left: 15px;
-        top: 32px;
-        bottom: 0;
-        width: 2px;
-        background: var(--border);
-      }
-      .progress-step:last-child::before {
-        display: none;
-      }
-      .progress-step.active::before {
-        background: var(--primary);
-      }
+    .progress-step {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding-bottom: 22px; position: relative;
+    }
+    .progress-step:last-child { padding-bottom: 0; }
+    .progress-step::before {
+      content: '';
+      position: absolute; left: 15px; top: 32px; bottom: 0;
+      width: 2px; background: var(--border);
+    }
+    .progress-step:last-child::before { display: none; }
+    .progress-step.active::before { background: var(--primary); }
 
-      .step-dot {
-        flex-shrink: 0;
-        width: 32px;
-        height: 32px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.75rem;
-        font-weight: 700;
-        background: var(--bg);
-        color: var(--muted);
-        border: 2px solid var(--border);
-        transition: all 0.3s;
-      }
-      .step-dot.active {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
-      }
-      .step-dot.done {
-        background: var(--success);
-        color: white;
-        border-color: var(--success);
-      }
-      .step-dot.done::after {
-        content: "✓";
-      }
+    .step-dot {
+      flex-shrink: 0;
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700;
+      background: var(--bg); color: var(--muted);
+      border: 2px solid var(--border);
+      transition: all 0.3s;
+    }
+    .step-dot.active {
+      background: var(--primary); color: white; border-color: var(--primary);
+    }
+    .step-dot.done {
+      background: var(--success); color: white; border-color: var(--success);
+    }
+    .step-dot.done::after { content: '✓'; }
 
-      .step-info {
-        padding-top: 4px;
-      }
-      .step-info strong {
-        display: block;
-        font-size: 0.83rem;
-        font-weight: 600;
-        color: var(--text);
-      }
-      .step-info span {
-        font-size: 0.73rem;
-        color: var(--muted);
-      }
+    .step-info { padding-top: 4px; }
+    .step-info strong { display: block; font-size: 0.83rem; font-weight: 600; color: var(--text); }
+    .step-info span { font-size: 0.73rem; color: var(--muted); }
 
-      /* Tips card */
-      .tip-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        margin-bottom: 14px;
-      }
-      .tip-item:last-child {
-        margin-bottom: 0;
-      }
-      .tip-icon {
-        flex-shrink: 0;
-        width: 28px;
-        height: 28px;
-        background: var(--accent-light);
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .tip-icon svg {
-        color: var(--primary);
-        width: 13px;
-        height: 13px;
-      }
-      .tip-item p {
-        font-size: 0.78rem;
-        color: var(--muted);
-        line-height: 1.55;
-      }
+    /* Tips card */
+    .tip-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-bottom: 14px;
+    }
+    .tip-item:last-child { margin-bottom: 0; }
+    .tip-icon {
+      flex-shrink: 0; width: 28px; height: 28px;
+      background: var(--accent-light); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tip-icon svg { color: var(--primary); width: 13px; height: 13px; }
+    .tip-item p { font-size: 0.78rem; color: var(--muted); line-height: 1.55; }
 
-      /* ── FORM CARD ── */
-      .form-card {
-        background: var(--white);
-        border-radius: 28px;
-        padding: 44px 40px;
-        box-shadow: var(--shadow-lg);
-        border: 1px solid var(--border);
-        opacity: 0;
-        animation: fadeUp 0.6s ease 0.1s forwards;
-      }
+    /* ── FORM CARD ── */
+    .form-card {
+      background: var(--white);
+      border-radius: 28px;
+      padding: 44px 40px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.1s forwards;
+    }
 
-      .form-header {
-        margin-bottom: 36px;
-      }
-      .form-header .tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        background: var(--accent-light);
-        color: var(--primary);
-        font-size: 0.73rem;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        padding: 5px 12px;
-        border-radius: 100px;
-        border: 1px solid var(--border);
-        margin-bottom: 14px;
-      }
-      .form-header .tag svg {
-        width: 12px;
-        height: 12px;
-      }
-      .form-header h1 {
-        font-size: 1.9rem;
-        font-weight: 800;
-        color: var(--primary);
-        letter-spacing: -0.8px;
-        line-height: 1.15;
-        margin-bottom: 10px;
-      }
-      .form-header p {
-        font-size: 0.88rem;
-        color: var(--muted);
-        line-height: 1.6;
-      }
+    .form-header { margin-bottom: 36px; }
+    .form-header .tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--accent-light); color: var(--primary);
+      font-size: 0.73rem; font-weight: 700; letter-spacing: 0.5px;
+      padding: 5px 12px; border-radius: 100px;
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+    .form-header .tag svg { width: 12px; height: 12px; }
+    .form-header h1 {
+      font-size: 1.9rem; font-weight: 800;
+      color: var(--primary); letter-spacing: -0.8px;
+      line-height: 1.15; margin-bottom: 10px;
+    }
+    .form-header p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
 
-      /* Divider */
-      .form-divider {
-        height: 1px;
-        background: var(--border);
-        margin: 28px 0;
-        position: relative;
-      }
-      .form-divider span {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        background: var(--white);
-        padding-right: 12px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: var(--primary);
-        letter-spacing: 1px;
-        text-transform: uppercase;
-      }
+    /* Divider */
+    .form-divider {
+      height: 1px; background: var(--border);
+      margin: 28px 0;
+      position: relative;
+    }
+    .form-divider span {
+      position: absolute; top: 50%; left: 0;
+      transform: translateY(-50%);
+      background: var(--white);
+      padding-right: 12px;
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--primary); letter-spacing: 1px;
+      text-transform: uppercase;
+    }
 
-      /* Section */
-      .form-section {
-        margin-bottom: 32px;
-      }
+    /* Section */
+    .form-section { margin-bottom: 32px; }
 
-      /* Two-col grid */
-      .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-      }
+    /* Two-col grid */
+    .form-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
 
-      /* Field */
-      .field {
-        display: flex;
-        flex-direction: column;
-        gap: 7px;
-      }
-      .field label {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: var(--text);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .field label svg {
-        width: 13px;
-        height: 13px;
-        color: var(--accent);
-      }
-      .field .required {
-        color: var(--danger);
-        font-size: 0.75rem;
-      }
+    /* Field */
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field label {
+      font-size: 0.8rem; font-weight: 600;
+      color: var(--text); display: flex; align-items: center; gap: 6px;
+    }
+    .field label svg { width: 13px; height: 13px; color: var(--accent); }
+    .field .required { color: var(--danger); font-size: 0.75rem; }
 
-      .field input[type="text"],
-      .field input[type="number"],
-      .field textarea,
-      .field select {
-        font-family: "Poppins", sans-serif;
-        font-size: 0.875rem;
-        font-weight: 400;
-        color: var(--text);
-        background: var(--bg);
-        border: 2px solid transparent;
-        border-radius: 14px;
-        padding: 13px 16px;
-        outline: none;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s,
-          background 0.2s;
-        width: 100%;
-      }
-      .field input::placeholder,
-      .field textarea::placeholder {
-        color: #a0aec0;
-      }
-      .field input:focus,
-      .field textarea:focus,
-      .field select:focus {
-        border-color: var(--primary);
-        background: var(--white);
-        box-shadow: 0 0 0 4px rgba(28, 44, 141, 0.08);
-      }
-      .field textarea {
-        resize: vertical;
-        min-height: 100px;
-      }
+    .field input[type="text"],
+    .field input[type="number"],
+    .field textarea,
+    .field select {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.875rem; font-weight: 400;
+      color: var(--text);
+      background: var(--bg);
+      border: 2px solid transparent;
+      border-radius: 14px;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      width: 100%;
+    }
+    .field input::placeholder,
+    .field textarea::placeholder { color: #a0aec0; }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--primary);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(28,44,141,0.08);
+    }
+    .field textarea { resize: vertical; min-height: 100px; }
 
-      /* Gender buttons */
-      .gender-group {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-      .gender-btn {
-        flex: 1;
-        min-width: 90px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        padding: 12px 16px;
-        border: 2px solid var(--border);
-        border-radius: 14px;
-        background: var(--bg);
-        font-family: "Poppins", sans-serif;
-        font-size: 0.83rem;
-        font-weight: 600;
-        color: var(--muted);
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-      .gender-btn svg {
-        width: 15px;
-        height: 15px;
-      }
-      .gender-btn:hover {
-        border-color: var(--accent);
-        color: var(--primary);
-        background: var(--accent-light);
-      }
-      .gender-btn.selected {
-        border-color: var(--primary);
-        background: var(--primary);
-        color: white;
-      }
+    /* Gender buttons */
+    .gender-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .gender-btn {
+      flex: 1; min-width: 90px;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      background: var(--bg);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.83rem; font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .gender-btn svg { width: 15px; height: 15px; }
+    .gender-btn:hover { border-color: var(--accent); color: var(--primary); background: var(--accent-light); }
+    .gender-btn.selected {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+    }
 
-      /* Pain slider */
-      .slider-wrap {
-        position: relative;
-      }
-      .pain-display {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 10px;
-      }
-      .pain-value {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .pain-num {
-        font-size: 2rem;
-        font-weight: 800;
-        color: var(--primary);
-        line-height: 1;
-      }
-      .pain-label {
-        font-size: 0.78rem;
-        font-weight: 600;
-        color: var(--muted);
-      }
-      .pain-emoji {
-        font-size: 1.4rem;
-      }
+    /* Pain slider */
+    .slider-wrap { position: relative; }
+    .pain-display {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .pain-value {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .pain-num {
+      font-size: 2rem; font-weight: 800; color: var(--primary);
+      line-height: 1;
+    }
+    .pain-label {
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--muted);
+    }
+    .pain-emoji { font-size: 1.4rem; }
 
-      input[type="range"] {
-        -webkit-appearance: none;
-        width: 100%;
-        height: 6px;
-        background: var(--border);
-        border-radius: 100px;
-        outline: none;
-        cursor: pointer;
-      }
-      input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 22px;
-        height: 22px;
-        border-radius: 8px;
-        background: var(--primary);
-        box-shadow: 0 2px 8px rgba(28, 44, 141, 0.35);
-        transition: transform 0.2s;
-      }
-      input[type="range"]::-webkit-slider-thumb:hover {
-        transform: scale(1.2);
-      }
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%; height: 6px;
+      background: var(--border);
+      border-radius: 100px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px; height: 22px;
+      border-radius: 8px;
+      background: var(--primary);
+      box-shadow: 0 2px 8px rgba(28,44,141,0.35);
+      transition: transform 0.2s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
-      .pain-scale {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 8px;
-      }
-      .pain-scale span {
-        font-size: 0.68rem;
-        color: var(--muted);
-        font-weight: 500;
-      }
+    .pain-scale {
+      display: flex; justify-content: space-between;
+      margin-top: 8px;
+    }
+    .pain-scale span {
+      font-size: 0.68rem; color: var(--muted); font-weight: 500;
+    }
 
-      /* Pain color track */
-      .pain-track {
-        height: 8px;
-        border-radius: 100px;
-        background: linear-gradient(
-          90deg,
-          #22c55e 0%,
-          #eab308 40%,
-          #f97316 70%,
-          #ef4444 100%
-        );
-        margin-bottom: 6px;
-        position: relative;
-      }
-      .pain-indicator {
-        position: absolute;
-        top: 50%;
-        width: 14px;
-        height: 14px;
-        background: white;
-        border: 3px solid var(--primary);
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        transition: left 0.1s;
-        pointer-events: none;
-      }
+    /* Pain color track */
+    .pain-track {
+      height: 8px; border-radius: 100px;
+      background: linear-gradient(90deg, #22c55e 0%, #eab308 40%, #f97316 70%, #ef4444 100%);
+      margin-bottom: 6px; position: relative;
+    }
+    .pain-indicator {
+      position: absolute; top: 50%; width: 14px; height: 14px;
+      background: white; border: 3px solid var(--primary);
+      border-radius: 50%; transform: translate(-50%, -50%);
+      transition: left 0.1s;
+      pointer-events: none;
+    }
 
-      /* Submit area */
-      .form-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-top: 28px;
-        border-top: 1px solid var(--border);
-        gap: 20px;
-        flex-wrap: wrap;
-      }
+    /* Submit area */
+    .form-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      gap: 20px;
+      flex-wrap: wrap;
+    }
 
-      .disclaimer-note {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        flex: 1;
-        min-width: 200px;
-      }
-      .disclaimer-note svg {
-        color: var(--accent);
-        width: 16px;
-        height: 16px;
-        flex-shrink: 0;
-        margin-top: 2px;
-      }
-      .disclaimer-note p {
-        font-size: 0.74rem;
-        color: var(--muted);
-        line-height: 1.5;
-      }
+    .disclaimer-note {
+      display: flex; align-items: flex-start; gap: 10px;
+      flex: 1; min-width: 200px;
+    }
+    .disclaimer-note svg { color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
+    .disclaimer-note p { font-size: 0.74rem; color: var(--muted); line-height: 1.5; }
 
-      .btn-submit {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        background: var(--primary);
-        color: white;
-        font-family: "Poppins", sans-serif;
-        font-size: 0.92rem;
-        font-weight: 700;
-        padding: 15px 32px;
-        border-radius: 16px;
-        border: none;
-        cursor: pointer;
-        box-shadow: 0 4px 20px rgba(28, 44, 141, 0.3);
-        transition:
-          background 0.2s,
-          transform 0.2s,
-          box-shadow 0.2s;
-        white-space: nowrap;
-      }
-      .btn-submit:hover {
-        background: var(--secondary);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 28px rgba(28, 44, 141, 0.35);
-      }
-      .btn-submit:active {
-        transform: translateY(0);
-      }
-      .btn-submit svg {
-        width: 16px;
-        height: 16px;
-      }
+    .btn-submit {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--primary); color: white;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.92rem; font-weight: 700;
+      padding: 15px 32px; border-radius: 16px;
+      border: none; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(28,44,141,0.3);
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+    .btn-submit:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(28,44,141,0.35);
+    }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-submit svg { width: 16px; height: 16px; }
 
-      /* ── ANIMATIONS ── */
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(28px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-      /* Validation highlight */
-      .field input.error,
-      .field textarea.error {
-        border-color: var(--danger) !important;
-        background: #fff5f5 !important;
-      }
-      .field .error-msg {
-        font-size: 0.72rem;
-        color: var(--danger);
-        font-weight: 500;
-        display: none;
-      }
-      .field.has-error .error-msg {
-        display: block;
-      }
+    /* Validation highlight */
+    .field input.error,
+    .field textarea.error {
+      border-color: var(--danger) !important;
+      background: #fff5f5 !important;
+    }
+    .field .error-msg {
+      font-size: 0.72rem; color: var(--danger); font-weight: 500;
+      display: none;
+    }
+    .field.has-error .error-msg { display: block; }
 
-      /* ── RESPONSIVE ── */
-      @media (max-width: 860px) {
-        .page {
-          grid-template-columns: 1fr;
-        }
-        .sidebar {
-          position: static;
-        }
-        .form-card {
-          padding: 28px 20px;
-        }
-        .form-row {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- NAVBAR -->
-    <nav>
-      <a href="/" class="nav-brand">
-        <div class="nav-logo">
-          <svg
-            width="24"
-            height="18"
-            viewBox="0 0 26 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="4" cy="10" r="2.5" fill="white" opacity="0.7" />
-            <polyline
-              class="heartwave-path"
-              points="1,10 6,10 8,4 10,16 12,10 14,7 15,13 17,10 25,10"
-              stroke="white"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              fill="none"
-            />
-          </svg>
-        </div>
-        <span class="nav-title">Fittin</span>
-      </a>
-      <a href="/" class="nav-back">
-        <i data-feather="arrow-left"></i>
-        Back to Home
-      </a>
-    </nav>
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .page { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .form-card { padding: 28px 20px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
 
-    <div class="page">
-      <!-- SIDEBAR -->
-      <aside class="sidebar">
-        <div class="sidebar-card">
-          <h3>Your Progress</h3>
-          <div class="progress-steps">
-            <div class="progress-step active">
-              <div class="step-dot active">1</div>
-              <div class="step-info">
-                <strong>Basic Info</strong>
-                <span>Name, age, gender</span>
-              </div>
+  <!-- NAVBAR -->
+  <nav>
+    <a href="/" class="nav-brand">
+      <div class="nav-logo">
+        <svg width="24" height="18" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="4" cy="10" r="2.5" fill="white" opacity="0.7"/>
+          <polyline class="heartwave-path"
+            points="1,10 6,10 8,4 10,16 12,10 14,7 15,13 17,10 25,10"
+            stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <span class="nav-title">Fittin</span>
+    </a>
+    <a href="/" class="nav-back">
+      <i data-feather="arrow-left"></i>
+      Back to Home
+    </a>
+  </nav>
+
+  <div class="page">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <h3>Your Progress</h3>
+        <div class="progress-steps">
+          <div class="progress-step active">
+            <div class="step-dot active">1</div>
+            <div class="step-info">
+              <strong>Basic Info</strong>
+              <span>Name, age, gender</span>
             </div>
-            <div class="progress-step">
-              <div class="step-dot" id="dot2">2</div>
-              <div class="step-info">
-                <strong>Symptoms</strong>
-                <span>What you're feeling</span>
-              </div>
+          </div>
+          <div class="progress-step">
+            <div class="step-dot" id="dot2">2</div>
+            <div class="step-info">
+              <strong>Symptoms</strong>
+              <span>What you're feeling</span>
             </div>
-            <div class="progress-step">
-              <div class="step-dot" id="dot3">3</div>
-              <div class="step-info">
-                <strong>AI Analysis</strong>
-                <span>Get your results</span>
-              </div>
+          </div>
+          <div class="progress-step">
+            <div class="step-dot" id="dot3">3</div>
+            <div class="step-info">
+              <strong>AI Analysis</strong>
+              <span>Get your results</span>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="sidebar-card" style="animation-delay: 0.35s">
-          <h3>Tips</h3>
-          <div class="tip-item">
-            <div class="tip-icon"><i data-feather="edit-3"></i></div>
-            <p>
-              Be as specific as possible about your symptoms for better results.
-            </p>
-          </div>
-          <div class="tip-item">
-            <div class="tip-icon"><i data-feather="clock"></i></div>
-            <p>Mention how long you've been experiencing the symptom.</p>
-          </div>
-          <div class="tip-item">
-            <div class="tip-icon"><i data-feather="alert-circle"></i></div>
-            <p>If you feel it's an emergency, contact a doctor immediately.</p>
-          </div>
+      <div class="sidebar-card" style="animation-delay:0.35s">
+        <h3>Tips</h3>
+        <div class="tip-item">
+          <div class="tip-icon"><i data-feather="edit-3"></i></div>
+          <p>Be as specific as possible about your symptoms for better results.</p>
         </div>
-      </aside>
+        <div class="tip-item">
+          <div class="tip-icon"><i data-feather="clock"></i></div>
+          <p>Mention how long you've been experiencing the symptom.</p>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon"><i data-feather="alert-circle"></i></div>
+          <p>If you feel it's an emergency, contact a doctor immediately.</p>
+        </div>
+      </div>
+    </aside>
 
-      <!-- FORM -->
-      <main>
-        <div class="form-card">
-          <div class="form-header">
-            <div class="tag">
-              <i data-feather="clipboard"></i>
-              Health Check-In
+    <!-- FORM -->
+    <main>
+      <div class="form-card">
+        <div class="form-header">
+          <div class="tag">
+            <i data-feather="clipboard"></i>
+            Health Check-In
+          </div>
+          <h1>Tell us how<br/>you're feeling</h1>
+          <p>Fill in your details below and our AI will provide educational health guidance based on your symptoms.</p>
+        </div>
+
+        <form id="healthForm" action="/analyze" method="POST" novalidate>
+
+          <!-- SECTION 1: Basic Info -->
+          <div class="form-divider"><span>Basic Information</span></div>
+          <div class="form-section">
+            <div class="form-row" style="margin-bottom:20px">
+              <div class="field" id="field-name">
+                <label><i data-feather="user"></i> Full Name <span class="required">*</span></label>
+                <input type="text" name="name" id="name" placeholder="e.g. Ahmad Rizky" autocomplete="off"/>
+                <span class="error-msg">Please enter your name.</span>
+              </div>
+              <div class="field" id="field-age">
+                <label><i data-feather="calendar"></i> Age <span class="required">*</span></label>
+                <input type="number" name="age" id="age" placeholder="e.g. 17" min="1" max="120"/>
+                <span class="error-msg">Please enter a valid age.</span>
+              </div>
             </div>
-            <h1>Tell us how<br />you're feeling</h1>
-            <p>
-              Fill in your details below and our AI will provide educational
-              health guidance based on your symptoms.
-            </p>
+
+            <div class="field">
+              <label><i data-feather="users"></i> Gender <span class="required">*</span></label>
+              <div class="gender-group">
+                <button type="button" class="gender-btn" data-value="Male" onclick="selectGender(this)">
+                  <i data-feather="user"></i> Male
+                </button>
+                <button type="button" class="gender-btn" data-value="Female" onclick="selectGender(this)">
+                  <i data-feather="user"></i> Female
+                </button>
+                <button type="button" class="gender-btn" data-value="Prefer not to say" onclick="selectGender(this)">
+                  <i data-feather="minus-circle"></i> Prefer not to say
+                </button>
+              </div>
+              <input type="hidden" name="gender" id="gender"/>
+            </div>
           </div>
 
-          <form id="healthForm" action="/analyze" method="POST" novalidate>
-            <!-- SECTION 1: Basic Info -->
-            <div class="form-divider"><span>Basic Information</span></div>
-            <div class="form-section">
-              <div class="form-row" style="margin-bottom: 20px">
-                <div class="field" id="field-name">
-                  <label
-                    ><i data-feather="user"></i> Full Name
-                    <span class="required">*</span></label
-                  >
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="e.g. Ahmad Rizky"
-                    autocomplete="off"
-                  />
-                  <span class="error-msg">Please enter your name.</span>
-                </div>
-                <div class="field" id="field-age">
-                  <label
-                    ><i data-feather="calendar"></i> Age
-                    <span class="required">*</span></label
-                  >
-                  <input
-                    type="number"
-                    name="age"
-                    id="age"
-                    placeholder="e.g. 17"
-                    min="1"
-                    max="120"
-                  />
-                  <span class="error-msg">Please enter a valid age.</span>
-                </div>
-              </div>
+          <!-- SECTION 2: Symptoms -->
+          <div class="form-divider"><span>Symptom Details</span></div>
+          <div class="form-section">
+            <div class="field" id="field-symptom" style="margin-bottom:20px">
+              <label><i data-feather="activity"></i> Primary Symptom <span class="required">*</span></label>
+              <input type="text" name="symptom" id="symptom" placeholder="e.g. Knee pain, headache, sore throat..."/>
+              <span class="error-msg">Please describe your main symptom.</span>
+            </div>
 
-              <div class="field">
-                <label
-                  ><i data-feather="users"></i> Gender
-                  <span class="required">*</span></label
-                >
-                <div class="gender-group">
-                  <button
-                    type="button"
-                    class="gender-btn"
-                    data-value="Male"
-                    onclick="selectGender(this)"
-                  >
-                    <i data-feather="user"></i> Male
-                  </button>
-                  <button
-                    type="button"
-                    class="gender-btn"
-                    data-value="Female"
-                    onclick="selectGender(this)"
-                  >
-                    <i data-feather="user"></i> Female
-                  </button>
-                  <button
-                    type="button"
-                    class="gender-btn"
-                    data-value="Prefer not to say"
-                    onclick="selectGender(this)"
-                  >
-                    <i data-feather="minus-circle"></i> Prefer not to say
-                  </button>
+            <!-- Pain Slider -->
+            <div class="field" style="margin-bottom:20px">
+              <label><i data-feather="thermometer"></i> Pain Level</label>
+              <div class="pain-display">
+                <div class="pain-value">
+                  <span class="pain-num" id="painNum">5</span>
+                  <span class="pain-label" id="painLabel">Moderate</span>
                 </div>
-                <input type="hidden" name="gender" id="gender" />
+                <span class="pain-emoji" id="painEmoji">😐</span>
+              </div>
+              <div class="pain-track">
+                <div class="pain-indicator" id="painIndicator" style="left:44.4%"></div>
+              </div>
+              <input type="range" name="pain_level" id="painSlider" min="1" max="10" value="5" oninput="updatePain(this.value)"/>
+              <div class="pain-scale">
+                <span>1 — Minimal</span>
+                <span>5 — Moderate</span>
+                <span>10 — Severe</span>
               </div>
             </div>
 
-            <!-- SECTION 2: Symptoms -->
-            <div class="form-divider"><span>Symptom Details</span></div>
-            <div class="form-section">
-              <div class="field" id="field-symptom" style="margin-bottom: 20px">
-                <label
-                  ><i data-feather="activity"></i> Primary Symptom
-                  <span class="required">*</span></label
-                >
-                <input
-                  type="text"
-                  name="symptom"
-                  id="symptom"
-                  placeholder="e.g. Knee pain, headache, sore throat..."
-                />
-                <span class="error-msg"
-                  >Please describe your main symptom.</span
-                >
-              </div>
-
-              <!-- Pain Slider -->
-              <div class="field" style="margin-bottom: 20px">
-                <label><i data-feather="thermometer"></i> Pain Level</label>
-                <div class="pain-display">
-                  <div class="pain-value">
-                    <span class="pain-num" id="painNum">5</span>
-                    <span class="pain-label" id="painLabel">Moderate</span>
-                  </div>
-                  <span class="pain-emoji" id="painEmoji">😐</span>
-                </div>
-                <div class="pain-track">
-                  <div
-                    class="pain-indicator"
-                    id="painIndicator"
-                    style="left: 44.4%"
-                  ></div>
-                </div>
-                <input
-                  type="range"
-                  name="pain_level"
-                  id="painSlider"
-                  min="1"
-                  max="10"
-                  value="5"
-                  oninput="updatePain(this.value)"
-                />
-                <div class="pain-scale">
-                  <span>1 — Minimal</span>
-                  <span>5 — Moderate</span>
-                  <span>10 — Severe</span>
-                </div>
-              </div>
-
-              <!-- Notes -->
-              <div class="field">
-                <label><i data-feather="file-text"></i> Additional Notes</label>
-                <textarea
-                  name="notes"
-                  id="notes"
-                  placeholder="Describe any additional details: how long you've had this symptom, what makes it worse or better, any other symptoms you've noticed..."
-                ></textarea>
-              </div>
+            <!-- Notes -->
+            <div class="field">
+              <label><i data-feather="file-text"></i> Additional Notes</label>
+              <textarea name="notes" id="notes" placeholder="Describe any additional details: how long you've had this symptom, what makes it worse or better, any other symptoms you've noticed..."></textarea>
             </div>
+          </div>
 
-            <!-- FOOTER -->
-            <div class="form-footer">
-              <div class="disclaimer-note">
-                <i data-feather="shield"></i>
-                <p>
-                  Fittin provides <strong>educational guidance only</strong> and
-                  does not replace professional medical advice. Always consult a
-                  doctor for personal medical decisions.
-                </p>
-              </div>
-              <button type="submit" class="btn-submit">
-                Analyze My Condition
-                <i data-feather="arrow-right"></i>
-              </button>
+          <!-- FOOTER -->
+          <div class="form-footer">
+            <div class="disclaimer-note">
+              <i data-feather="shield"></i>
+              <p>Fittin provides <strong>educational guidance only</strong> and does not replace professional medical advice. Always consult a doctor for personal medical decisions.</p>
             </div>
-          </form>
-        </div>
-      </main>
-    </div>
+            <button type="submit" class="btn-submit">
+              Analyze My Condition
+              <i data-feather="arrow-right"></i>
+            </button>
+          </div>
 
-    <script>
+        </form>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    feather.replace();
+
+    // Gender selection
+    function selectGender(btn) {
+      document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById('gender').value = btn.dataset.value;
       feather.replace();
+    }
 
-      // Gender selection
-      function selectGender(btn) {
-        document
-          .querySelectorAll(".gender-btn")
-          .forEach((b) => b.classList.remove("selected"));
-        btn.classList.add("selected");
-        document.getElementById("gender").value = btn.dataset.value;
-        feather.replace();
+    // Pain slider logic
+    const painLabels = ['','Minimal','Very Mild','Mild','Mild-Moderate','Moderate','Moderate','Noticeable','Significant','Severe','Extreme'];
+    const painEmojis = ['','😌','🙂','😕','😟','😐','😣','😖','😩','😱','🤯'];
+
+    function updatePain(val) {
+      val = parseInt(val);
+      document.getElementById('painNum').textContent = val;
+      document.getElementById('painLabel').textContent = painLabels[val];
+      document.getElementById('painEmoji').textContent = painEmojis[val];
+      // Move indicator: range is 1–10
+      const pct = ((val - 1) / 9) * 100;
+      document.getElementById('painIndicator').style.left = pct + '%';
+    }
+
+    // Form validation
+    document.getElementById('healthForm').addEventListener('submit', function(e) {
+      let valid = true;
+
+      const name = document.getElementById('name');
+      const age = document.getElementById('age');
+      const gender = document.getElementById('gender');
+      const symptom = document.getElementById('symptom');
+
+      // Name
+      const fName = document.getElementById('field-name');
+      if (!name.value.trim()) {
+        fName.classList.add('has-error'); name.classList.add('error'); valid = false;
+      } else {
+        fName.classList.remove('has-error'); name.classList.remove('error');
       }
 
-      // Pain slider logic
-      const painLabels = [
-        "",
-        "Minimal",
-        "Very Mild",
-        "Mild",
-        "Mild-Moderate",
-        "Moderate",
-        "Moderate",
-        "Noticeable",
-        "Significant",
-        "Severe",
-        "Extreme",
-      ];
-      const painEmojis = [
-        "",
-        "😌",
-        "🙂",
-        "😕",
-        "😟",
-        "😐",
-        "😣",
-        "😖",
-        "😩",
-        "😱",
-        "🤯",
-      ];
-
-      function updatePain(val) {
-        val = parseInt(val);
-        document.getElementById("painNum").textContent = val;
-        document.getElementById("painLabel").textContent = painLabels[val];
-        document.getElementById("painEmoji").textContent = painEmojis[val];
-        // Move indicator: range is 1–10
-        const pct = ((val - 1) / 9) * 100;
-        document.getElementById("painIndicator").style.left = pct + "%";
+      // Age
+      const fAge = document.getElementById('field-age');
+      if (!age.value || age.value < 1 || age.value > 120) {
+        fAge.classList.add('has-error'); age.classList.add('error'); valid = false;
+      } else {
+        fAge.classList.remove('has-error'); age.classList.remove('error');
       }
 
-      // Form validation
-      document
-        .getElementById("healthForm")
-        .addEventListener("submit", function (e) {
-          let valid = true;
+      // Symptom
+      const fSym = document.getElementById('field-symptom');
+      if (!symptom.value.trim()) {
+        fSym.classList.add('has-error'); symptom.classList.add('error'); valid = false;
+      } else {
+        fSym.classList.remove('has-error'); symptom.classList.remove('error');
+      }
 
-          const name = document.getElementById("name");
-          const age = document.getElementById("age");
-          const gender = document.getElementById("gender");
-          const symptom = document.getElementById("symptom");
+      if (!valid) {
+        e.preventDefault();
+        // Scroll to first error
+        document.querySelector('.has-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        // Animate button while loading
+        const btn = document.querySelector('.btn-submit');
+        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-icon"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Analysing...';
+        btn.style.opacity = '0.8';
+      }
+    });
 
-          // Name
-          const fName = document.getElementById("field-name");
-          if (!name.value.trim()) {
-            fName.classList.add("has-error");
-            name.classList.add("error");
-            valid = false;
-          } else {
-            fName.classList.remove("has-error");
-            name.classList.remove("error");
-          }
-
-          // Age
-          const fAge = document.getElementById("field-age");
-          if (!age.value || age.value < 1 || age.value > 120) {
-            fAge.classList.add("has-error");
-            age.classList.add("error");
-            valid = false;
-          } else {
-            fAge.classList.remove("has-error");
-            age.classList.remove("error");
-          }
-
-          // Symptom
-          const fSym = document.getElementById("field-symptom");
-          if (!symptom.value.trim()) {
-            fSym.classList.add("has-error");
-            symptom.classList.add("error");
-            valid = false;
-          } else {
-            fSym.classList.remove("has-error");
-            symptom.classList.remove("error");
-          }
-
-          if (!valid) {
-            e.preventDefault();
-            // Scroll to first error
-            document
-              .querySelector(".has-error")
-              ?.scrollIntoView({ behavior: "smooth", block: "center" });
-          } else {
-            // Animate button while loading
-            const btn = document.querySelector(".btn-submit");
-            btn.innerHTML =
-              '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-icon"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Analysing...';
-            btn.style.opacity = "0.8";
-          }
-        });
-
-      // Clear error on input
-      ["name", "age", "symptom"].forEach((id) => {
-        document.getElementById(id).addEventListener("input", function () {
-          this.classList.remove("error");
-          document.getElementById("field-" + id)?.classList.remove("has-error");
-        });
+    // Clear error on input
+    ['name','age','symptom'].forEach(id => {
+      document.getElementById(id).addEventListener('input', function() {
+        this.classList.remove('error');
+        document.getElementById('field-' + id)?.classList.remove('has-error');
       });
+    });
 
-      // Progress step animation on scroll / interaction
-      const dot2 = document.getElementById("dot2");
-      const dot3 = document.getElementById("dot3");
-      document.getElementById("symptom").addEventListener("focus", () => {
-        dot2.classList.add("active");
-      });
-      document
-        .querySelector(".btn-submit")
-        .addEventListener("mouseenter", () => {
-          dot3.classList.add("active");
-        });
-    </script>
-  </body>
+    // Progress step animation on scroll / interaction
+    const dot2 = document.getElementById('dot2');
+    const dot3 = document.getElementById('dot3');
+    document.getElementById('symptom').addEventListener('focus', () => {
+      dot2.classList.add('active');
+    });
+    document.querySelector('.btn-submit').addEventListener('mouseenter', () => {
+      dot3.classList.add('active');
+    });
+  </script>
+</body>
 </html>
